@@ -4,18 +4,20 @@ body {
     font-family: Georgia, 'Times New Roman', Times, serif;
     background: radial-gradient(#323358, #191A40);
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
+/* Estilo para el contenedor del formulario */
 .formulario {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background: white;
     border-radius: 10px;
     padding: 20px;
     box-sizing: border-box;
-    width: 300px;
+    width: 400px;
+    margin-top: 50px;
 }
 
 .formulario h1 {
@@ -33,8 +35,14 @@ body {
 
 .formulario .campo {
     position: relative;
-    border-bottom: 2px solid #adadad;
     margin: 20px 0;
+}
+
+/* Estilo para las etiquetas "Usuario" y "Canción" */
+.campo label {
+    color: #adadad;
+    font-size: 16px;
+    margin-bottom: 5px;
 }
 
 .campo input {
@@ -44,39 +52,23 @@ body {
     border: none;
     background: none;
     outline: none;
+    border-bottom: 2px solid #adadad;
 }
 
-.campo label {
-    position: absolute;
-    top: 50%;
-    left: 0;
+/* Estilo para los marcadores de posición */
+.campo input::placeholder {
     color: #adadad;
-    transform: translateY(-50%);
-    font-size: 16px;
-    pointer-events: none;
-    transition: .9s;
+    transition: color 0.9s;
 }
 
-.campo span::before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 0%;
-    height: 2px;
-    background: #323358;
-    transition: .9s;
-}
-
-.campo input:focus ~ label,
-.campo input:valid ~ label {
-    top: -5px;
+/* Cambia el color del marcador de posición cuando el campo está enfocado */
+.campo input:focus::placeholder {
     color: #323358;
 }
 
-.campo input:focus ~ span::before,
-.campo input:valid ~ span::before {
-    width: 100%;
+/* Estilo para la barra inferior de la entrada de texto */
+.campo input:focus {
+    border-bottom: 2px solid #323358;
 }
 
 button[type="submit"] {
@@ -97,18 +89,47 @@ button[type="submit"]:hover {
     border-color: #323358;
 }
 
-.registro {
+/* Estilo para el contenedor de registros */
+.registros {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 66%; /* Ancho aumentado para que los registros quepan en una línea */
     margin-top: 20px;
+}
+
+/* Estilo para el título de registros */
+.registros h2 {
     text-align: center;
+    padding: 0;
+    border-bottom: 1px solid silver;
+    color: #13166f;
+    margin-bottom: 20px;
+}
+
+/* Estilo para los elementos de la lista de registros */
+.registros li {
     font-size: 16px;
     color: black;
+    white-space: nowrap; /* Evita saltos de línea */
+    overflow: hidden; /* Oculta el texto que no cabe */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos en caso de recorte */
+    margin-bottom: 10px;
 }
 
-.registro a {
-    color: #13166f;
-    text-decoration: none;
+/* Estilo para los botones de editar y eliminar en la lista de registros */
+.registros button {
+    background: #191A40;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
 }
 
-.registro a:hover {
-    text-decoration: underline;
+.registros button:hover {
+    background: #323358;
 }

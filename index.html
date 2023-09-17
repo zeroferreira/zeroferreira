@@ -3,23 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Canciones</title>
+    <title>Registra tu canción</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .campo {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        .campo label {
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
     <div class="formulario">
         <h1>Registra tu canción</h1>
-        <form method="post" action="procesar.php">
+        <form id="agregarForm">
             <div class="campo">
-                <label for="nombre_usuario">Usuario:</label>
+                <label for="nombre_usuario" id="etiquetaUsuario">Usuario:</label>
                 <input type="text" id="nombre_usuario" name="nombre_usuario" required>
             </div>
             <div class="campo">
-                <label for="nombre_cancion">Canción:</label>
+                <label for="nombre_cancion" id="etiquetaCancion">Canción:</label>
                 <input type="text" id="nombre_cancion" name="nombre_cancion" required>
             </div>
-            <button type="submit">Enviar</button>
+            <button type="submit">Agregar</button>
         </form>
     </div>
+
+    <div class="registros">
+        <h2>Registros</h2>
+        <ol id="listaRegistros">
+            <!-- Aquí se mostrarán los registros existentes -->
+        </ol>
+    </div>
+
+    <script>
+        const agregarForm = document.getElementById('agregarForm');
+        const listaRegistros = document.getElementById('listaRegistros');
+        const registros = [];
+
+        // Función para obtener la fecha y hora actual
+        function obtenerFechaHora() {
+            const now = new Date();
+            const fechaHora = now.toLocaleString();
+            return fechaHora;
+        }
+
+        // Función para mostrar los registros
+        function mostrarRegistros() {
+            listaRegistros.innerHTML = '';
+            registros.forEach((registro, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${index + 1}. ${registro.usuario} - ${registro.cancion} - Fecha y Hora: ${registro.fechaHora}
+                <button onclick="editarRegistro(${index})">Editar</button> 
+                <button onclick="eliminarRegistro(${index})">Eliminar</button>`;
+                listaRegistros.appendChild(listItem);
+            });
+        }
+
+        // Función para agregar un registro
+        agregarForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nombreUsuario = document.getElementById('nombre_usuario').value;
+            const nombreCancion = document.getElementById('nombre_cancion').value;
+            if (nombreUsuario && nombreCancion) {
+                const fechaHora = obtenerFechaHora();
+                registros.push({ usuario: nombreUsuario, cancion: nombreCancion, fechaHora });
+                agregarForm.reset();
+                mostrarRegistros();
+            }
+        });
+
+        // Función para editar un registro
+        function editarRegistro(index) {
+            const nuevoNombreUsuario = prompt('Editar usuario:', registros[index].usuario);
+            const nuevoNombreCancion = prompt('Editar canción:', registros[index].cancion);
+            if (nuevoNombreUsuario !== null && nuevoNombreCancion !== null) {
+                registros[index].usuario = nuevoNombreUsuario;
+                registros[index].cancion = nuevoNombreCancion;
+                mostrarRegistros();
+            }
+        }
+
+        // Función para eliminar un registro
+        function eliminarRegistro(index) {
+            if (confirm('¿Estás seguro de eliminar este registro?')) {
+                registros.splice(index, 1);
+                mostrarRegistros();
+            }
+        }
+    </script>
 </body>
 </html>
