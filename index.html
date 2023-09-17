@@ -35,9 +35,9 @@
 
     <div class="registros">
         <h2>Registros</h2>
-        <ol id="listaRegistros">
+        <ul id="listaRegistros">
             <!-- Aquí se mostrarán los registros existentes -->
-        </ol>
+        </ul>
     </div>
 
     <script>
@@ -72,6 +72,11 @@
             if (nombreUsuario && nombreCancion) {
                 const fechaHora = obtenerFechaHora();
                 registros.push({ usuario: nombreUsuario, cancion: nombreCancion, fechaHora });
+
+                // Enviar el registro al servidor WebSocket
+                const registroNuevo = { usuario: nombreUsuario, cancion: nombreCancion, fechaHora };
+                socket.send(JSON.stringify(registroNuevo));
+
                 agregarForm.reset();
                 mostrarRegistros();
             }
@@ -95,6 +100,15 @@
                 mostrarRegistros();
             }
         }
+
+        // Configurar WebSocket
+        const socket = new WebSocket('https://zeroferreira.github.io/'); // Reemplaza con la URL de tu servidor WebSocket
+        socket.onmessage = (event) => {
+            // Cuando se recibe un mensaje desde el servidor WebSocket, agregarlo a la lista de registros
+            const registro = JSON.parse(event.data);
+            registros.push(registro);
+            mostrarRegistros();
+        };
     </script>
 </body>
 </html>
